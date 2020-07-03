@@ -5,59 +5,71 @@
      fxLayoutAlign.gt-md="space-around center"
      fxLayoutGap="10px">
 
-  <mat-card *ngIf="dish" fxFlex>
+  <mat-card *ngIf="dish" fxFlex [@expand]>
     <mat-card-header>
       <div mat-card-avatar></div>
       <mat-card-title>
         <h3>{{dish.name | uppercase}}</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image src={{dish.image}} alt={{dish.name}}>
+    <img mat-card-image src="{{BaseURL+ dish.image}}" alt={{dish.name}}>
     <mat-card-content>
       <p>{{dish.description}}
       </p>
     </mat-card-content>
   </mat-card>
-  <div fxFlex [hidden]="dish">
+  <div fxFlex [hidden]="dish || dishErrMess">
     <mat-spinner></mat-spinner>
     <h4>Loading . . . Please Wait</h4>
   </div>
+  <div fxFlex *ngIf="dishErrMess">
+    <h2>Error</h2>
+    <h4>{{dishErrMess}}</h4>
+  </div>
 
-  <mat-card *ngIf="promotion" fxFlex>
+  <mat-card *ngIf="promotion" fxFlex [@expand]>
     <mat-card-header>
       <div mat-card-avatar></div>
       <mat-card-title>
         <h3>{{promotion.name | uppercase}}</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image src={{promotion.image}} alt={{promotion.name}}>
+    <img mat-card-image src="{{BaseURL+ promotion.image}}" alt={{promotion.name}}>
     <mat-card-content>
       <p>{{promotion.description}}
       </p>
     </mat-card-content>
   </mat-card>
-  <div fxFlex [hidden]="promotion">
+  <div fxFlex [hidden]="promotion || proErrMess">
     <mat-spinner></mat-spinner>
     <h4>Loading . . . Please Wait</h4>
   </div>
+  <div fxFlex *ngIf="proErrMess">
+    <h2>Error</h2>
+    <h4>{{proErrMess}}</h4>
+  </div>
 
-  <mat-card *ngIf="featuredleader" fxFlex>
+  <mat-card *ngIf="featuredleader" fxFlex [@expand]>
     <mat-card-header>
       <div mat-card-avatar></div>
       <mat-card-title>
         <h3>{{featuredleader.name | uppercase}}</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image src={{featuredleader.image}} alt={{featuredleader.name}}>
+    <img mat-card-image src="{{BaseURL+ featuredleader.image}}" alt={{featuredleader.name}}>
     <mat-card-content>
       <p>{{featuredleader.designation}}</p>
       <p>{{featuredleader.description}}
       </p>
     </mat-card-content>
   </mat-card>
-  <div fxFlex [hidden]="featuredleader">
+  <div fxFlex [hidden]="featuredleader || leadErrMess">
     <mat-spinner></mat-spinner>
     <h4>Loading . . . Please Wait</h4>
+  </div>
+  <div fxFlex *ngIf="leadErrMess">
+    <h2>Error</h2>
+    <h4>{{proErrMess}}</h4>
   </div>
 
 </div>

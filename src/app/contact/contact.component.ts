@@ -1,16 +1,31 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms/';
 import {Feedback, ContactType} from '../shared/feedback';
+import {visibility, flyInOut, expand} from '../animations/app.animation';
+import {FeedbackService} from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss']
+  styleUrls: ['./contact.component.scss'],
+  host: {
+    '[@flyInOut]': 'true',
+    'style': 'display:block'
+  },
+  animations: [
+    flyInOut(),
+    visibility(),
+    expand()    
+  ]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
-  feedback: Feedback;
+  feedback: Feedback; 
+  feedbackcopy: Feedback; 
+  errMess: string;
+  //visibility= "shown";
+  //visispin="hidden";
   contactType = ContactType;
   @ViewChild('fform') feedbackFormDirective;
 
@@ -42,11 +57,10 @@ export class ContactComponent implements OnInit {
     }
   };
 
-  constructor(private fb: FormBuilder) { 
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder, private feedbackservice: FeedbackService) { }
 
   ngOnInit() {
+    this.createForm();
   }
 
   createForm() {
@@ -86,18 +100,29 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this.feedback=this.feedbackForm.value;
-    console.log(this.feedback);
-    this.feedbackForm.reset({
-      firstname: '',
-      lastname: '',
-      telnum: 0,
-      email: '',
-      agree: false,
-      contacttype: 'None',
-      message: ''
-    });
-    this.feedbackFormDirective.resetForm();
+    this.feedback=this.feedbackForm.value;    
+    this.feedbackservice.submitFeedback(this.feedback)
+    .subscribe((feedback)=>{
+      this.feedback=feedback;
+      this.feedbackcopy=feedback;                     
+    },
+    errmess=>{this.errMess=<any>errmess;});
+    setTimeout(()=>{
+      this.feedbackForm.reset({
+        firstname: '',
+        lastname: '',
+        telnum: 0,
+        email: '',
+        agree: false,
+        contacttype: 'None',
+        message: ''
+      });
+      this.feedbackFormDirective.resetForm();
+      this.feedback=null;
+      this.feedbackcopy=null;
+      this.errMess=null;      
+    },5000)
+    
   }
 
 }
