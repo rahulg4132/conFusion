@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   leadErrMess: string;
   promotion: Promotion;
   featuredleader: Leader;
+  abcd: string;
 
   constructor(private dishService: DishService, private promotionService: PromotionService, private leaderservice: LeaderService, @Inject('BaseURL') private BaseURL) { }
 
